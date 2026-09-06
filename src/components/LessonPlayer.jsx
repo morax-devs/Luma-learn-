@@ -1,0 +1,3 @@
+export function LessonPlayer({ course, lesson, isComplete }) {
+  return <div className={`lesson-player art-${course.thumbnail.toLowerCase()}`}><div className="player-grid" /><div className="player-center"><button className="player-play" aria-label={`Play ${lesson.title}`}>▶</button><span>Preview lesson</span></div><div className="player-course-mark">{course.thumbnail}</div><div className="player-label"><span>MODULE LESSON</span><strong>{isComplete ? 'Completed' : 'Ready to learn'}</strong></div><div className="player-controls"><span>0:00</span><div className="player-progress"><i /></div><span>{lesson.duration}</span><button aria-label="Toggle fullscreen">⛶</button></div></div>
+}

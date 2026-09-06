@@ -1,0 +1,5 @@
+import { Button, Card } from '../ui'
+
+export function QuizResult({ quiz, result, onReview, onRetake, courseId }) {
+  return <Card className="quiz-result"><div className={`result-badge ${result.passed ? 'passed' : 'failed'}`}>{result.passed ? 'Passed' : 'Keep practicing'}</div><p className="eyebrow">QUIZ COMPLETE</p><h1>{result.percentage}%</h1><p className="result-summary">You answered <strong>{result.score} of {quiz.questions.length}</strong> questions correctly.</p><div className="result-ring"><span>{result.percentage}<small>%</small></span></div><div className="result-stats"><div><strong>{result.score}</strong><span>Correct</span></div><div><strong>{quiz.questions.length - result.score}</strong><span>Incorrect</span></div><div><strong>{quiz.passingScore}%</strong><span>To pass</span></div></div><div className="result-actions"><Button onClick={onReview} variant="secondary">Review answers</Button><Button onClick={onRetake}>Retake quiz <span>↻</span></Button><Button to={`/learn/${courseId}`} variant="secondary">Back to course</Button></div></Card>
+}

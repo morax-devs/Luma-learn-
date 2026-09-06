@@ -1,0 +1,5 @@
+import { Button } from './ui'
+
+export function LessonNavigation({ previousLesson, nextLesson, courseId, currentLesson, isComplete, onComplete }) {
+  return <div className="lesson-navigation"><Button to={previousLesson ? `/learn/${courseId}?lesson=${previousLesson.id}` : undefined} variant="secondary" className={!previousLesson ? 'button-disabled' : ''} aria-disabled={!previousLesson} onClick={(event) => { if (!previousLesson) event.preventDefault() }}>← Previous</Button><div className="lesson-nav-status"><span>LESSON</span><strong>{currentLesson.title}</strong></div><div className="lesson-nav-actions">{!isComplete(currentLesson.id) && <Button onClick={() => onComplete(currentLesson.id)}>Mark as complete <span>✓</span></Button>}<Button to={nextLesson ? `/learn/${courseId}?lesson=${nextLesson.id}` : undefined} variant="secondary" className={!nextLesson ? 'button-disabled' : ''} aria-disabled={!nextLesson} onClick={(event) => { if (!nextLesson) event.preventDefault() }}>{nextLesson ? 'Next lesson →' : 'Course complete'}</Button></div></div>
+}

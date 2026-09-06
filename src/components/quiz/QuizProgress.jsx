@@ -1,0 +1,3 @@
+export function QuizProgress({ questions, answers, currentIndex, onSelect }) {
+  return <div className="quiz-progress"><div className="quiz-progress-track"><span style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }} /></div><div className="question-map" aria-label="Question navigation">{questions.map((question, index) => <button className={`${index === currentIndex ? 'current ' : ''}${answers[question.id] ? 'answered' : ''}`} onClick={() => onSelect(index)} aria-label={`Go to question ${index + 1}${answers[question.id] ? ', answered' : ''}`} key={question.id}>{index + 1}</button>)}</div></div>
+}

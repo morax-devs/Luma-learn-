@@ -1,0 +1,5 @@
+import { Card } from '../ui'
+
+export function AnswerReview({ quiz, result, onBack }) {
+  return <div className="answer-review"><div className="review-heading"><div><p className="eyebrow coral">REVIEW MODE</p><h2>See what you learned</h2></div><button className="review-back" onClick={onBack}>← Back to result</button></div>{quiz.questions.map((question, index) => { const selected = result.answers[question.id]; const correct = selected === question.correctAnswer; return <Card className={`review-card ${correct ? 'review-correct' : 'review-incorrect'}`} key={question.id}><div className="review-card-head"><span>QUESTION {String(index + 1).padStart(2, '0')}</span><strong>{correct ? '✓ Correct' : '× Incorrect'}</strong></div><h3>{question.question}</h3><p className="review-answer"><span>Your answer</span>{selected || 'Not answered'}</p>{!correct && <p className="review-answer correct-answer"><span>Correct answer</span>{question.correctAnswer}</p>}<p className="review-explanation">{question.explanation}</p></Card>})}</div>
+}
