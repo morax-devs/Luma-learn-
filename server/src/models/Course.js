@@ -5,6 +5,8 @@ const lessonSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
   duration: { type: String, default: '' },
   completed: { type: Boolean, default: false },
+  content: { type: String, default: '' },
+  videoUrl: { type: String, default: '' },
 }, { _id: false })
 
 const moduleSchema = new mongoose.Schema({
@@ -19,10 +21,11 @@ const courseSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
   description: { type: String, required: true },
   instructor: { type: String, required: true },
-  category: { type: String, required: true },
-  level: { type: String, required: true },
-  duration: { type: String, required: true },
-  thumbnail: { type: String, default: '' },
+  instructorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
+  category: { type: String, required: true, trim: true },
+  level: { type: String, required: true, trim: true },
+  duration: { type: String, default: 'Self-paced' },
+  thumbnail: { type: String, default: 'AI' },
   rating: { type: Number, default: 0, min: 0, max: 5 },
   numberOfStudents: { type: Number, default: 0, min: 0 },
   modules: { type: Number, default: 0, min: 0 },

@@ -35,7 +35,7 @@ export function HomePage() {
   const featuredProgress = useCourseProgress(featuredCourse)
   const { history: quizHistory } = useQuizResults()
   const latestQuiz = quizHistory[0]
-  const latestQuizData = quizList.find((quiz) => quiz.id === latestQuiz?.quizId)
+  const latestQuizData = latestQuiz?.quizId ? quizList.find((quiz) => (quiz.id || quiz._id) === latestQuiz.quizId) : null
   const nextLesson = featuredProgress.nextLesson
   const completedLessons = featuredCourse.curriculum?.flatMap((module) => module.lessons).filter((lesson) => featuredProgress.completedIds.includes(lesson.id)).slice(-3) || []
 
@@ -170,18 +170,18 @@ export function HomePage() {
         <div>
           <p className="eyebrow">QUIZ ACTIVITY</p>
           <h3>
-            {latestQuizData
+            {latestQuizData && latestQuiz
               ? latestQuizData.title
               : (isAuthenticated ? 'Ready to test your understanding?' : 'Test your skills with quizzes')}
           </h3>
           <p>
-            {latestQuizData
-              ? `Latest result · ${latestQuiz.percentage}% · ${latestQuiz.passed ? 'Passed' : 'Keep practicing'}`
+            {latestQuizData && latestQuiz
+              ? `Latest result · ${latestQuiz?.percentage ?? 0}% · ${latestQuiz?.passed ? 'Passed' : 'Keep practicing'}`
               : (isAuthenticated ? 'Complete a lesson quiz to see your results here.' : 'Sign in to take lesson quizzes and test your knowledge.')}
           </p>
         </div>
-        {latestQuizData ? (
-          <Link to={`/quiz/${latestQuizData.id}`}>Review result <span>→</span></Link>
+        {latestQuizData && latestQuiz ? (
+          <Link to={`/quiz/${latestQuizData.id || latestQuizData._id}`}>Review result <span>→</span></Link>
         ) : isAuthenticated ? (
           <Link to="/courses">Explore courses <span>→</span></Link>
         ) : (

@@ -18,9 +18,25 @@ function getErrorCode(status) {
   return 'UNKNOWN_ERROR'
 }
 
+const AUTH_KEY = 'luma-auth-session'
+const AUTH_EVENT = 'luma-auth-updated'
+
+function clearStoredSession() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem(AUTH_KEY)
+    }
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent(AUTH_EVENT))
+    }
+  } catch {
+    /* Ignore storage errors during cleanup */
+  }
+}
+
 function getStoredToken() {
   try {
-    const sessionStr = typeof localStorage !== 'undefined' ? localStorage.getItem('luma-auth-session') : null
+    const sessionStr = typeof localStorage !== 'undefined' ? localStorage.getItem(AUTH_KEY) : null
     if (!sessionStr) return null
     const session = JSON.parse(sessionStr)
     return session?.token || null
@@ -43,7 +59,12 @@ export async function request(path, { method = 'GET', body, token, signal } = {}
   }
   let payload = null
   try { payload = await response.json() } catch { /* Empty response bodies are valid for some requests. */ }
-  if (!response.ok) throw new ApiError(payload?.message || 'The request could not be completed.', { status: response.status, code: getErrorCode(response.status), details: payload?.details })
+  if (!response.ok) {
+    if (response.status === 401 && headers.Authorization) {
+      clearStoredSession()
+    }
+    throw new ApiError(payload?.message || 'The request could not be completed.', { status: response.status, code: getErrorCode(response.status), details: payload?.details })
+  }
   return payload
 }
 

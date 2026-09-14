@@ -27,3 +27,11 @@ export async function requireAuth(req, res, next) {
     return res.status(401).json({ success: false, message: 'Invalid or expired authorization token.', details: error.message })
   }
 }
+
+export function requireInstructor(req, res, next) {
+  if (!req.user || (req.user.role !== 'instructor' && req.user.role !== 'admin')) {
+    return res.status(403).json({ success: false, message: 'Access denied. Instructor role required.' })
+  }
+  next()
+}
+

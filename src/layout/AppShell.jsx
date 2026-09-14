@@ -32,6 +32,8 @@ export function AppShell({ children }) {
     ? currentUser.name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
     : 'U'
 
+  const isInstructor = currentUser?.role === 'instructor' || currentUser?.role === 'admin'
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -39,6 +41,11 @@ export function AppShell({ children }) {
         <div className="sidebar-label">Workspace</div>
         <nav className="sidebar-nav" aria-label="Main navigation">
           {navItems.map((item) => <NavLink key={item.id} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} to={item.to}><span>{item.icon}</span>{item.label}</NavLink>)}
+          {isInstructor && (
+            <NavLink className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} to="/instructor">
+              <span>✎</span>Instructor Studio
+            </NavLink>
+          )}
         </nav>
         <div className="sidebar-bottom">
           <div className="sidebar-label">Your account</div>

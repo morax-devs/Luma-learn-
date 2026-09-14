@@ -8,4 +8,9 @@ export const courseService = {
   getCategories: () => (isApiMode ? courseApi.getCategories() : mockApi.getCategories()),
   getLevels: () => (isApiMode ? courseApi.getLevels() : mockApi.getLevels()),
   enroll: (courseId) => (isApiMode ? courseApi.enroll(courseId) : Promise.resolve(courseId)),
+  getInstructorCourses: () => courseApi.getInstructorCourses(),
+  createCourse: (data) => courseApi.createCourse(data),
+  updateCourse: (courseId, data) => courseApi.updateCourse(courseId, data),
+  getCourseQuiz: (courseId) => courseApi.getCourseQuiz(courseId),
+  saveCourseQuiz: (courseId, quizData) => courseApi.saveCourseQuiz(courseId, quizData),
 }
