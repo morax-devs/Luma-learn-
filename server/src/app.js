@@ -11,9 +11,25 @@ import { errorHandler } from './middleware/errorHandler.js'
 import { notFound } from './middleware/notFound.js'
 
 const app = express()
-const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173'
 
-app.use(cors({ origin: allowedOrigin }))
+// Support multiple allowed origins (comma-separated in CLIENT_URL)
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
+  .split(',')
+  .map((o) => o.trim())
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. mobile apps, curl)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true)
+      } else {
+        callback(new Error(`CORS: origin ${origin} not allowed`))
+      }
+    },
+    credentials: true,
+  })
+)
 app.use(express.json())
 
 app.get('/api/health', (req, res) => {
